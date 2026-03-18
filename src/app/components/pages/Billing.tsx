@@ -1,73 +1,175 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Download, FileText } from 'lucide-react';
 import { InvoiceModal } from '../modals/InvoiceModal';
+import { projectId, publicAnonKey } from '/utils/supabase/info';
 
-const invoices = [
-  {
-    number: 'INV-0031',
-    client: { initials: 'AM', name: 'Amara Mensah', color: 'c-av-b' },
-    date: 'Mar 9, 2026',
-    sessions: '2 sessions',
-    amount: '$280.00',
-    status: 'paid' as const,
-  },
-  {
-    number: 'INV-0032',
-    client: { initials: 'JL', name: 'Jamal Lee', color: 'c-av-c' },
-    date: 'Mar 9, 2026',
-    sessions: '2 sessions',
-    amount: '$280.00',
-    status: 'pending' as const,
-  },
-  {
-    number: 'INV-0030',
-    client: { initials: 'SM', name: 'Sadia Mohamoud', color: 'c-av-a' },
-    date: 'Mar 6, 2026',
-    sessions: '2 sessions',
-    amount: '$140.00',
-    status: 'paid' as const,
-  },
-  {
-    number: 'INV-0029',
-    client: { initials: 'PC', name: 'Priya & Chetan C.', color: 'c-av-d' },
-    date: 'Mar 7, 2026',
-    sessions: '1 session',
-    amount: '$180.00',
-    status: 'overdue' as const,
-  },
-  {
-    number: 'INV-0028',
-    client: { initials: 'AM', name: 'Amara Mensah', color: 'c-av-b' },
-    date: 'Feb 23, 2026',
-    sessions: '2 sessions',
-    amount: '$280.00',
-    status: 'paid' as const,
-  },
-  {
-    number: 'INV-0027',
-    client: { initials: 'RB', name: 'Riya Bhatt', color: 'c-av-e' },
-    date: 'Mar 10, 2026',
-    sessions: '1 session',
-    amount: '$110.00',
-    status: 'pending' as const,
-  },
-];
+const SUPABASE_URL = `https://${projectId}.supabase.co`;
+
+interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  clientName: string;
+  date: string;
+  amount: number;
+  status: 'paid' | 'pending' | 'overdue';
+  sessions: number;
+}
 
 export function Billing() {
   const [filter, setFilter] = useState('all');
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
+
+  useEffect(() => {
+    loadInvoices();
+  }, []);
+
+  const loadInvoices = async () => {
+    try {
+      // For demo purposes, use mock data. In production, fetch from backend
+      // const response = await fetch(`${SUPABASE_URL}/functions/v1/make-server-4d1a502d/invoices`, {
+      //   headers: { Authorization: `Bearer ${publicAnonKey}` }
+      // });
+      // const data = await response.json();
+      // setInvoices(data.invoices);
+      
+      // Mock data for now
+      setInvoices([
+        {
+          id: '1',
+          invoiceNumber: 'INV-0031',
+          clientName: 'Amara Mensah',
+          date: '2026-03-09',
+          sessions: 2,
+          amount: 280.00,
+          status: 'paid' as const,
+        },
+        {
+          id: '2',
+          invoiceNumber: 'INV-0032',
+          clientName: 'Jamal Lee',
+          date: '2026-03-09',
+          sessions: 2,
+          amount: 280.00,
+          status: 'pending' as const,
+        },
+        {
+          id: '3',
+          invoiceNumber: 'INV-0030',
+          clientName: 'Sadia Mohamoud',
+          date: '2026-03-06',
+          sessions: 2,
+          amount: 140.00,
+          status: 'paid' as const,
+        },
+        {
+          id: '4',
+          invoiceNumber: 'INV-0029',
+          clientName: 'Priya & Chetan C.',
+          date: '2026-03-07',
+          sessions: 1,
+          amount: 180.00,
+          status: 'overdue' as const,
+        },
+        {
+          id: '5',
+          invoiceNumber: 'INV-0028',
+          clientName: 'Amara Mensah',
+          date: '2026-02-23',
+          sessions: 2,
+          amount: 280.00,
+          status: 'paid' as const,
+        },
+        {
+          id: '6',
+          invoiceNumber: 'INV-0027',
+          clientName: 'Riya Bhatt',
+          date: '2026-03-10',
+          sessions: 1,
+          amount: 110.00,
+          status: 'pending' as const,
+        },
+      ]);
+    } catch (error) {
+      console.error('Failed to load invoices:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExportT2125 = async () => {
+    setExporting(true);
+    try {
+      const year = '2025'; // Current tax year
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/make-server-4d1a502d/tax-export/t2125/${year}`,
+        {
+          headers: { Authorization: `Bearer ${publicAnonKey}` }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to generate T2125 export');
+      }
+
+      const data = await response.json();
+      
+      // Download CSV file
+      const blob = new Blob([data.csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = data.fileName || `MentalPath_T2125_${year}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      alert(`T2125 summary for ${year} downloaded successfully!`);
+    } catch (error) {
+      console.error('T2125 export error:', error);
+      alert('Failed to export T2125 summary. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const filteredInvoices = invoices.filter((invoice) => {
     if (filter === 'all') return true;
     return invoice.status === filter;
   });
 
+  // Calculate summary stats
+  const currentMonth = new Date().toLocaleString('en-US', { month: 'long' });
+  const monthRevenue = invoices
+    .filter(inv => {
+      const invDate = new Date(inv.date);
+      const now = new Date();
+      return invDate.getMonth() === now.getMonth() && 
+             invDate.getFullYear() === now.getFullYear() &&
+             inv.status === 'paid';
+    })
+    .reduce((sum, inv) => sum + inv.amount, 0);
+
+  const outstanding = invoices
+    .filter(inv => inv.status === 'pending' || inv.status === 'overdue')
+    .reduce((sum, inv) => sum + inv.amount, 0);
+
+  const ytdRevenue = invoices
+    .filter(inv => {
+      const invDate = new Date(inv.date);
+      return invDate.getFullYear() === new Date().getFullYear() && inv.status === 'paid';
+    })
+    .reduce((sum, inv) => sum + inv.amount, 0);
+
   return (
     <>
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <SummaryBox label="Collected — March" value="$4,200" highlight />
-        <SummaryBox label="Outstanding" value="$840" />
-        <SummaryBox label="YTD collected" value="$10,640" />
+        <SummaryBox label={`Collected — ${currentMonth}`} value={`$${monthRevenue.toFixed(0)}`} highlight />
+        <SummaryBox label="Outstanding" value={`$${outstanding.toFixed(0)}`} />
+        <SummaryBox label="YTD collected" value={`$${ytdRevenue.toFixed(0)}`} />
       </div>
 
       <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden mb-5">
@@ -117,24 +219,19 @@ export function Billing() {
             {filteredInvoices.map((invoice, i) => (
               <tr key={i} className="cursor-pointer transition-all duration-100 hover:[&>td]:bg-[var(--warm)]">
                 <td className="px-5 py-3.5 border-t border-[var(--border)] font-medium text-[var(--ink)] text-[13px] align-middle">
-                  {invoice.number}
+                  {invoice.invoiceNumber}
                 </td>
                 <td className="px-5 py-3.5 border-t border-[var(--border)] text-[13px] text-[var(--ink-soft)] align-middle">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-[26px] h-[26px] rounded-full flex items-center justify-center text-[10px] font-medium flex-shrink-0 ${getAvatarColor(invoice.client.color)}`}>
-                      {invoice.client.initials}
-                    </div>
-                    {invoice.client.name}
-                  </div>
+                  {invoice.clientName}
                 </td>
                 <td className="px-5 py-3.5 border-t border-[var(--border)] text-[13px] text-[var(--ink-soft)] align-middle">
-                  {invoice.date}
+                  {new Date(invoice.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </td>
                 <td className="px-5 py-3.5 border-t border-[var(--border)] text-[13px] text-[var(--ink-soft)] align-middle">
-                  {invoice.sessions}
+                  {invoice.sessions} session(s)
                 </td>
                 <td className="px-5 py-3.5 border-t border-[var(--border)] font-medium text-[var(--ink)] text-sm align-middle">
-                  {invoice.amount}
+                  ${invoice.amount.toFixed(2)}
                 </td>
                 <td className="px-5 py-3.5 border-t border-[var(--border)] text-[13px] text-[var(--ink-soft)] align-middle">
                   <InvoiceStatus status={invoice.status} />
@@ -157,7 +254,15 @@ export function Billing() {
           Download at tax time — no accountant needed for the basics.
         </div>
         <div className="flex gap-2.5">
-          <button className="flex items-center gap-[7px] px-3.5 py-2 rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-150 border border-[var(--border)] bg-transparent text-[var(--ink-soft)] hover:bg-[var(--warm)] hover:text-[var(--ink)]">
+          <button
+            onClick={handleExportT2125}
+            className="flex items-center gap-[7px] px-3.5 py-2 rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-150 border border-[var(--border)] bg-transparent text-[var(--ink-soft)] hover:bg-[var(--warm)] hover:text-[var(--ink)]"
+          >
+            {exporting ? (
+              <Download className="w-[13px] h-[13px] animate-spin" strokeWidth={2} />
+            ) : (
+              <FileText className="w-[13px] h-[13px]" strokeWidth={2} />
+            )}
             Export 2025 T2125 summary
           </button>
           <button className="flex items-center gap-[7px] px-3.5 py-2 rounded-lg text-[13px] font-medium cursor-pointer transition-all duration-150 border border-[var(--border)] bg-transparent text-[var(--ink-soft)] hover:bg-[var(--warm)] hover:text-[var(--ink)]">
@@ -213,16 +318,4 @@ function InvoiceStatus({ status }: { status: 'paid' | 'pending' | 'overdue' }) {
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
-}
-
-function getAvatarColor(color: string) {
-  const colors: Record<string, string> = {
-    'c-av-a': 'bg-[#d4e8e4] text-[var(--sage-deep)]',
-    'c-av-b': 'bg-[#e8d4d4] text-[#7a3030]',
-    'c-av-c': 'bg-[#d4d4e8] text-[#303070]',
-    'c-av-d': 'bg-[#e8e4d4] text-[#5a4a10]',
-    'c-av-e': 'bg-[#e4d4e8] text-[#5a1a6a]',
-    'c-av-f': 'bg-[#d4e8d4] text-[#1a5a1a]',
-  };
-  return colors[color] || colors['c-av-a'];
 }

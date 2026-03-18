@@ -106,9 +106,10 @@ export function Clients() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-5">
+      {/* Header and filters */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-5">
         <div className="text-sm text-[var(--ink-muted)]">23 active clients · 2 on waitlist</div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1">
           <FilterButton active={filter === 'all'} onClick={() => setFilter('all')}>All</FilterButton>
           <FilterButton active={filter === 'active'} onClick={() => setFilter('active')}>Active</FilterButton>
           <FilterButton active={filter === 'waitlist'} onClick={() => setFilter('waitlist')}>Waitlist</FilterButton>
@@ -116,7 +117,8 @@ export function Clients() {
         </div>
       </div>
 
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden">
+      {/* Desktop Table View - Hidden on mobile */}
+      <div className="hidden lg:block bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden">
         <table className="w-full border-collapse">
           <thead>
             <tr>
@@ -195,18 +197,13 @@ export function Clients() {
                   )}
                   {client.sessions === 'Intake' && (
                     <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="px-2.5 py-[5px] rounded-md text-xs font-medium border border-[var(--border)] bg-transparent cursor-pointer text-[var(--ink-soft)] transition-all duration-150 hover:bg-[var(--sage-pale)] hover:border-[var(--sage-light)] hover:text-[var(--sage-deep)]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        alert('Intake prep would open here');
+                      }}
+                      className="px-2.5 py-[5px] rounded-md text-xs font-medium border border-[var(--sage)] bg-transparent cursor-pointer text-[var(--sage)] transition-all duration-150 hover:bg-[var(--sage-pale)]"
                     >
-                      View intake
-                    </button>
-                  )}
-                  {client.status === 'waitlist' && (
-                    <button
-                      onClick={(e) => e.stopPropagation()}
-                      className="px-2.5 py-[5px] rounded-md text-xs font-medium border border-[var(--border)] bg-transparent cursor-pointer text-[var(--ink-soft)] transition-all duration-150 hover:bg-[var(--sage-pale)] hover:border-[var(--sage-light)] hover:text-[var(--sage-deep)]"
-                    >
-                      Assign slot
+                      Prep
                     </button>
                   )}
                 </td>
@@ -214,6 +211,79 @@ export function Clients() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card View - Shown on mobile only */}
+      <div className="lg:hidden space-y-3">
+        {filteredClients.map((client, i) => (
+          <div
+            key={i}
+            onClick={() => setSelectedClient(client)}
+            className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4 cursor-pointer transition-all hover:shadow-md"
+          >
+            <div className="flex items-start gap-3 mb-3">
+              <div className={`w-[40px] h-[40px] rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 ${getAvatarColor(client.color)}`}>
+                {client.initials}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-[var(--ink)] text-base mb-1">{client.name}</div>
+                <div className="text-xs text-[var(--ink-muted)] mb-2">{client.since}</div>
+                <StatusPill status={client.status} />
+              </div>
+            </div>
+            
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-[var(--ink-muted)]">Next session:</span>
+                <span className="text-[var(--ink)] font-medium">{client.nextSession}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[var(--ink-muted)]">Progress:</span>
+                <span className="text-[var(--ink)]">{client.sessions}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[var(--ink-muted)]">Rate:</span>
+                <span className="text-[var(--ink)]">{client.rate}</span>
+              </div>
+            </div>
+
+            {client.tags.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-[var(--border)] flex flex-wrap gap-1.5">
+                {client.tags.map((tag, j) => (
+                  <span
+                    key={j}
+                    className="inline-block text-[11px] px-2 py-0.5 rounded bg-[var(--sage-pale)] text-[var(--sage-deep)] font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {client.sessions !== '—' && client.sessions !== 'Intake' && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setNoteModalClient(client.name);
+                }}
+                className="mt-3 w-full px-3 py-2 rounded-md text-sm font-medium border border-[var(--border)] bg-transparent cursor-pointer text-[var(--ink-soft)] transition-all duration-150 hover:bg-[var(--sage-pale)] hover:border-[var(--sage-light)] hover:text-[var(--sage-deep)]"
+              >
+                + Add Note
+              </button>
+            )}
+            {client.sessions === 'Intake' && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  alert('Intake prep would open here');
+                }}
+                className="mt-3 w-full px-3 py-2 rounded-md text-sm font-medium border border-[var(--sage)] bg-transparent cursor-pointer text-[var(--sage)] transition-all duration-150 hover:bg-[var(--sage-pale)]"
+              >
+                Prep Intake
+              </button>
+            )}
+          </div>
+        ))}
       </div>
 
       {selectedClient && <ClientDetailPanel client={selectedClient} onClose={() => setSelectedClient(null)} />}

@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { Check, Shield, Lock } from 'lucide-react';
+import { Check, Shield, Lock, Home } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 type Step = 1 | 2 | 3 | 4 | 5;
 
 export function ClientPortal() {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [consentsChecked, setConsentsChecked] = useState({
+    services: false,
+    privacy: false
+  });
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -17,6 +24,7 @@ export function ClientPortal() {
     sessionFormat: 'either',
     concerns: [] as string[],
     wellbeing: null as number | null,
+    reasonForTherapy: ''
   });
 
   const days = [
@@ -36,6 +44,28 @@ export function ClientPortal() {
   ];
 
   const nextStep = () => {
+    // Validation for Step 2: Check required fields
+    if (currentStep === 2) {
+      if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
+        toast.error('Please fill in all required fields (First name, Last name, Email)');
+        return;
+      }
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        toast.error('Please enter a valid email address');
+        return;
+      }
+    }
+    
+    // Validation for Step 4: Check consent checkboxes
+    if (currentStep === 4) {
+      if (!consentsChecked.services || !consentsChecked.privacy) {
+        toast.error('Please check both consent boxes to continue');
+        return;
+      }
+    }
+    
     if (currentStep < 5) setCurrentStep((currentStep + 1) as Step);
   };
 
@@ -56,7 +86,7 @@ export function ClientPortal() {
     <div className="min-h-screen bg-[var(--warm)]">
       {/* Header */}
       <div className="bg-[var(--ink)] h-14 px-[5vw] flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5 no-underline hover:opacity-80 transition-opacity">
           <div className="w-7 h-7 bg-[var(--sage)] rounded-[7px] flex items-center justify-center">
             <svg viewBox="0 0 24 24" className="w-[15px] h-[15px] fill-none stroke-white stroke-2 [stroke-linecap:round]">
               <path d="M12 3c-4.5 0-8 3.5-8 8 0 3 1.7 5.6 4.2 7l-.2 3 4-2c.7.1 1.3.2 2 .2 4.5 0 8-3.5 8-8s-3.5-8-8-8z"/>
@@ -64,10 +94,19 @@ export function ClientPortal() {
             </svg>
           </div>
           <span className="font-[var(--font-display)] text-base text-white">MentalPath</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-xs text-white/45">
-          <Shield className="w-[13px] h-[13px] stroke-[var(--sage-light)]" />
-          PHIPA-compliant · Encrypted · Canadian servers
+        </Link>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5 text-xs text-white/45">
+            <Shield className="w-[13px] h-[13px] stroke-[var(--sage-light)]" />
+            PHIPA-compliant · Encrypted · Canadian servers
+          </div>
+          <Link 
+            to="/" 
+            className="flex items-center gap-1.5 text-xs font-medium text-white/60 hover:text-white transition-colors no-underline"
+          >
+            <Home className="w-[14px] h-[14px]" />
+            Back to Home
+          </Link>
         </div>
       </div>
 
@@ -378,6 +417,8 @@ export function ClientPortal() {
                     In your own words, what is bringing you to therapy at this time?
                   </label>
                   <textarea
+                    value={formData.reasonForTherapy}
+                    onChange={(e) => setFormData({ ...formData, reasonForTherapy: e.target.value })}
                     placeholder="Feel free to share as much or as little as you're comfortable with..."
                     className="w-full px-3.5 py-2.5 rounded-lg border border-[var(--border)] bg-white text-sm outline-none transition-all focus:border-[var(--sage)] focus:shadow-[0_0_0_3px_rgba(74,124,111,0.08)] min-h-[100px] resize-y leading-relaxed"
                   />
@@ -450,14 +491,24 @@ export function ClientPortal() {
                 </div>
 
                 <div className="flex items-start gap-2.5 p-3.5 rounded-lg border-[1.5px] border-[var(--border)] bg-white mb-2.5">
-                  <input type="checkbox" className="w-4.5 h-4.5 mt-0.5 accent-[var(--sage)] cursor-pointer" />
+                  <input
+                    type="checkbox"
+                    className="w-4.5 h-4.5 mt-0.5 accent-[var(--sage)] cursor-pointer"
+                    checked={consentsChecked.services}
+                    onChange={() => setConsentsChecked({ ...consentsChecked, services: !consentsChecked.services })}
+                  />
                   <label className="text-[13px] text-[var(--ink-soft)] leading-relaxed cursor-pointer">
                     I have read and understood the consent form and privacy notice. I consent to receiving psychotherapy services.
                   </label>
                 </div>
 
                 <div className="flex items-start gap-2.5 p-3.5 rounded-lg border-[1.5px] border-[var(--border)] bg-white">
-                  <input type="checkbox" className="w-4.5 h-4.5 mt-0.5 accent-[var(--sage)] cursor-pointer" />
+                  <input
+                    type="checkbox"
+                    className="w-4.5 h-4.5 mt-0.5 accent-[var(--sage)] cursor-pointer"
+                    checked={consentsChecked.privacy}
+                    onChange={() => setConsentsChecked({ ...consentsChecked, privacy: !consentsChecked.privacy })}
+                  />
                   <label className="text-[13px] text-[var(--ink-soft)] leading-relaxed cursor-pointer">
                     I understand my information is stored on Canadian servers and protected under PHIPA.
                   </label>
@@ -506,7 +557,13 @@ export function ClientPortal() {
                     <span className="font-medium text-[var(--ink)]">Dr. Abena Osei-Mensah</span>
                   </div>
                 </div>
-                <button className="w-full max-w-[360px] px-8 py-3.5 rounded-[11px] text-base font-medium bg-[var(--sage)] text-white hover:bg-[var(--sage-deep)] transition-all">
+                <button
+                  className="w-full max-w-[360px] px-8 py-3.5 rounded-[11px] text-base font-medium bg-[var(--sage)] text-white hover:bg-[var(--sage-deep)] transition-all"
+                  onClick={() => {
+                    toast.success('Session booked successfully!');
+                    navigate('/');
+                  }}
+                >
                   Close window
                 </button>
               </div>

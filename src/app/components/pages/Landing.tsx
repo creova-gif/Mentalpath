@@ -1,8 +1,23 @@
 import { Link } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '../LanguageSwitcher';
+import { SEO, addStructuredData, mentalPathSchema } from '../../utils/seo';
 
 export function Landing() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    // Add structured data for SEO
+    const cleanup = addStructuredData(mentalPathSchema);
+    return cleanup;
+  }, []);
+
   return (
     <div className="bg-[var(--white)] min-h-screen">
+      <SEO />
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-[5vw] h-16 bg-[var(--white)]/92 backdrop-blur-[12px] border-b border-[var(--border)]">
         <Link to="/" className="flex items-center gap-2.5 no-underline">
@@ -14,16 +29,81 @@ export function Landing() {
           </div>
           <span className="font-[var(--font-display)] text-lg text-[var(--ink)] tracking-[-0.3px]">MentalPath</span>
         </Link>
+
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">Features</a>
-          <a href="#compliance" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">Compliance</a>
-          <a href="#pricing" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">Pricing</a>
-          <Link to="/portal" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">Client Portal</Link>
-          <Link to="/dashboard" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">Dashboard</Link>
+          <a href="#features" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">{t('nav.features')}</a>
+          <a href="#compliance" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">{t('nav.compliance')}</a>
+          <a href="#pricing" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">{t('nav.pricing')}</a>
+          <Link to="/client-portal" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">{t('nav.clientPortal')}</Link>
+          <Link to="/dashboard" className="text-sm text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors">{t('nav.dashboard')}</Link>
+          <LanguageSwitcher />
           <Link to="/signup" className="bg-[var(--sage)] text-white px-5 py-2.5 rounded-lg text-sm font-medium no-underline hover:bg-[var(--sage-deep)] transition-all hover:-translate-y-px">
-            Sign Up Free
+            {t('nav.signUpFree')}
           </Link>
         </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden p-2 text-[var(--ink-soft)] hover:text-[var(--sage)] transition-colors"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="absolute top-16 left-0 right-0 bg-[var(--white)] border-b border-[var(--border)] shadow-lg md:hidden">
+            <div className="flex flex-col py-4 px-[5vw] gap-4">
+              <a 
+                href="#features" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors py-2"
+              >
+                {t('nav.features')}
+              </a>
+              <a 
+                href="#compliance" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors py-2"
+              >
+                {t('nav.compliance')}
+              </a>
+              <a 
+                href="#pricing" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors py-2"
+              >
+                {t('nav.pricing')}
+              </a>
+              <Link 
+                to="/client-portal" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors py-2"
+              >
+                {t('nav.clientPortal')}
+              </Link>
+              <Link 
+                to="/dashboard" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-[var(--ink-soft)] no-underline hover:text-[var(--sage)] transition-colors py-2"
+              >
+                {t('nav.dashboard')}
+              </Link>
+              <div className="border-t border-[var(--border)] pt-4 -mx-[5vw] px-[5vw]">
+                <LanguageSwitcher />
+              </div>
+              <Link 
+                to="/signup" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="bg-[var(--sage)] text-white px-5 py-3 rounded-lg text-base font-medium no-underline hover:bg-[var(--sage-deep)] transition-all text-center mt-2"
+              >
+                {t('nav.signUpFree')}
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
@@ -33,25 +113,25 @@ export function Landing() {
         <div className="relative z-10">
           <div className="inline-flex items-center gap-2 bg-[var(--sage-pale)] border border-[rgba(74,124,111,0.2)] rounded-[20px] px-3.5 py-1.5 text-[13px] font-medium text-[var(--sage-deep)] mb-6">
             <span className="w-1.5 h-1.5 bg-[var(--sage)] rounded-full"/>
-            Made for Canadian therapists · PHIPA compliant
+            {t('hero.badge')}
           </div>
           
           <h1 className="font-[var(--font-display)] text-[clamp(38px,4.5vw,58px)] leading-[1.1] text-[var(--ink)] tracking-[-1px] mb-5">
-            Less admin.<br/>
-            More <em className="italic text-[var(--sage)]">presence</em><br/>
-            with your clients.
+            {t('hero.title.line1')}<br/>
+            {t('hero.title.line2')} <em className="italic text-[var(--sage)]">{t('hero.title.line2Italic')}</em><br/>
+            {t('hero.title.line3')}
           </h1>
           
           <p className="text-[17px] font-light text-[var(--ink-soft)] leading-[1.65] max-w-[460px] mb-9">
-            Practice management built for Canadian therapists, psychotherapists, and social workers. PHIPA-compliant, culturally-informed, and priced for solo practitioners.
+            {t('hero.subtitle')}
           </p>
           
           <div className="flex items-center gap-4 mb-10">
             <Link to="/dashboard" className="bg-[var(--sage)] text-white px-7 py-3.5 rounded-[10px] text-[15px] font-medium no-underline hover:bg-[var(--sage-deep)] transition-all hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(74,124,111,0.25)]">
-              Start your free trial →
+              {t('hero.cta')}
             </Link>
             <a href="#features" className="text-[var(--ink-soft)] text-[15px] no-underline flex items-center gap-1.5 hover:text-[var(--sage)] transition-colors">
-              See how it works
+              {t('hero.seeHow')}
               <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
               </svg>
@@ -59,11 +139,11 @@ export function Landing() {
           </div>
           
           <div className="flex items-center gap-2 text-[13px] text-[var(--ink-muted)]">
-            <span>No credit card required</span>
+            <span>{t('hero.footer.noCreditCard')}</span>
             <span className="w-1 h-1 bg-[var(--ink-muted)] rounded-full"/>
-            <span>Canadian servers (PHIPA)</span>
+            <span>{t('hero.footer.canadianServers')}</span>
             <span className="w-1 h-1 bg-[var(--ink-muted)] rounded-full"/>
-            <span>Cancel anytime</span>
+            <span>{t('hero.footer.cancelAnytime')}</span>
           </div>
         </div>
 
@@ -328,16 +408,18 @@ export function Landing() {
             No unit minimums. No surprise fees. Cancel any month. Built so solo practitioners can actually afford to run a compliant practice.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-5 max-w-[900px]">
-            <div className="border border-[var(--border)] rounded-2xl p-8 hover:-translate-y-1 transition-transform">
-              <div className="text-xs font-medium tracking-[0.8px] uppercase text-[var(--sage)] mb-3">Starter</div>
-              <div className="font-[var(--font-display)] text-[42px] text-[var(--ink)] leading-none mb-1">Free</div>
-              <div className="text-sm text-[var(--ink-muted)] mb-4">forever · 1 active client</div>
-              <div className="text-sm text-[var(--ink-soft)] mb-6 leading-[1.5]">Try MentalPath with a real client before committing. Full feature access, single client limit.</div>
-              <hr className="border-t border-[var(--border)] mb-5"/>
-              <ul className="space-y-2.5 mb-7 list-none">
+          <div className="grid md:grid-cols-3 gap-6 max-w-[1100px] mx-auto px-6">
+            <div className="border border-[var(--border)] rounded-2xl p-8 hover:-translate-y-1 transition-transform bg-white">
+              <div className="text-center">
+                <div className="text-xs font-medium tracking-[0.8px] uppercase text-[var(--sage)] mb-3">Starter</div>
+                <div className="font-[var(--font-display)] text-[48px] text-[var(--ink)] leading-none mb-1">Free</div>
+                <div className="text-sm text-[var(--ink-muted)] mb-4">forever · 1 active client</div>
+              </div>
+              <div className="text-sm text-[var(--ink-soft)] mb-6 leading-[1.6] text-center">Try MentalPath with a real client before committing. Full feature access, single client limit.</div>
+              <hr className="border-t border-[var(--border)] mb-6"/>
+              <ul className="space-y-3 mb-8 list-none">
                 {['1 active client', 'All note templates', 'Canadian server storage', 'Basic scheduling'].map((f, i) => (
-                  <li key={i} className="text-sm text-[var(--ink-soft)] flex items-start gap-2.5">
+                  <li key={i} className="text-sm text-[var(--ink-soft)] flex items-start gap-3">
                     <svg viewBox="0 0 16 16" className="w-4 h-4 flex-shrink-0 mt-0.5">
                       <circle cx="8" cy="8" r="7.5" fill="var(--sage-pale)" stroke="var(--sage)" strokeWidth="1"/>
                       <path d="M5 8l2 2 4-4" fill="none" stroke="var(--sage)" strokeWidth="1.5" strokeLinecap="round"/>
@@ -346,21 +428,23 @@ export function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/dashboard" className="block w-full py-3 rounded-[9px] text-[15px] font-medium text-center bg-transparent border-[1.5px] border-[var(--sage)] text-[var(--sage)] no-underline hover:bg-[var(--sage-pale)] transition-colors">
+              <Link to="/dashboard" className="block w-full py-3.5 rounded-[10px] text-[15px] font-medium text-center bg-transparent border-[1.5px] border-[var(--sage)] text-[var(--sage)] no-underline hover:bg-[var(--sage-pale)] transition-colors">
                 Get started free
               </Link>
             </div>
 
-            <div className="border border-[var(--sage)] rounded-2xl p-8 bg-[var(--sage)] text-white relative hover:-translate-y-1 transition-transform shadow-[0_16px_40px_rgba(0,0,0,0.08)]">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--gold)] text-white text-[11px] font-medium px-3.5 py-1 rounded-[20px] whitespace-nowrap">Most popular</div>
-              <div className="text-xs font-medium tracking-[0.8px] uppercase text-white/70 mb-3">Solo Practitioner</div>
-              <div className="font-[var(--font-display)] text-[42px] leading-none mb-1">$49</div>
-              <div className="text-sm text-white/60 mb-4">/month · unlimited clients</div>
-              <div className="text-sm text-white/70 mb-6 leading-[1.5]">Everything a solo therapist, social worker, or psychotherapist needs. PHIPA-compliant from day one.</div>
-              <hr className="border-t border-white/20 mb-5"/>
-              <ul className="space-y-2.5 mb-7 list-none">
+            <div className="border-2 border-[var(--sage)] rounded-2xl p-8 bg-[var(--sage)] text-white relative hover:-translate-y-2 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.12)] scale-105">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[var(--gold)] text-white text-[11px] font-semibold px-4 py-1.5 rounded-full whitespace-nowrap shadow-md">Most popular</div>
+              <div className="text-center">
+                <div className="text-xs font-medium tracking-[0.8px] uppercase text-white/70 mb-3">Solo Practitioner</div>
+                <div className="font-[var(--font-display)] text-[48px] leading-none mb-1">$49</div>
+                <div className="text-sm text-white/60 mb-4">/month · unlimited clients</div>
+              </div>
+              <div className="text-sm text-white/75 mb-6 leading-[1.6] text-center">Everything a solo therapist, social worker, or psychotherapist needs. PHIPA-compliant from day one.</div>
+              <hr className="border-t border-white/20 mb-6"/>
+              <ul className="space-y-3 mb-8 list-none">
                 {['Unlimited clients', 'All note formats (SOAP, DAP, BIRP)', 'AI session note assist', 'Online booking + reminders', 'Client portal + secure messaging', 'Billing + invoice + receipts', 'Culturally-adapted intake forms', 'Tax export (T2125 prep)'].map((f, i) => (
-                  <li key={i} className="text-sm text-white/85 flex items-start gap-2.5">
+                  <li key={i} className="text-sm text-white/90 flex items-start gap-3">
                     <svg viewBox="0 0 16 16" className="w-4 h-4 flex-shrink-0 mt-0.5">
                       <circle cx="8" cy="8" r="7.5" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" strokeWidth="1"/>
                       <path d="M5 8l2 2 4-4" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
@@ -369,20 +453,22 @@ export function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/dashboard" className="block w-full py-3 rounded-[9px] text-[15px] font-medium text-center bg-white text-[var(--sage-deep)] no-underline hover:bg-[var(--sage-pale)] transition-colors">
-                Start 30-day free trial
+              <Link to="/dashboard" className="block w-full py-3.5 rounded-[10px] text-[15px] font-semibold text-center bg-white text-[var(--sage-deep)] no-underline hover:bg-[var(--sage-pale)] transition-colors shadow-sm">
+                Start 7-day free trial
               </Link>
             </div>
 
-            <div className="border border-[var(--border)] rounded-2xl p-8 hover:-translate-y-1 transition-transform">
-              <div className="text-xs font-medium tracking-[0.8px] uppercase text-[var(--sage)] mb-3">Group Practice</div>
-              <div className="font-[var(--font-display)] text-[42px] text-[var(--ink)] leading-none mb-1">$79</div>
-              <div className="text-sm text-[var(--ink-muted)] mb-4">/month per clinician · 2+ clinicians</div>
-              <div className="text-sm text-[var(--ink-soft)] mb-6 leading-[1.5]">Multi-clinician scheduling, owner dashboard, separate billing per clinician, shared client base management.</div>
-              <hr className="border-t border-[var(--border)] mb-5"/>
-              <ul className="space-y-2.5 mb-7 list-none">
+            <div className="border border-[var(--border)] rounded-2xl p-8 hover:-translate-y-1 transition-transform bg-white">
+              <div className="text-center">
+                <div className="text-xs font-medium tracking-[0.8px] uppercase text-[var(--sage)] mb-3">Group Practice</div>
+                <div className="font-[var(--font-display)] text-[48px] text-[var(--ink)] leading-none mb-1">$79</div>
+                <div className="text-sm text-[var(--ink-muted)] mb-4">/month per clinician · 2+ clinicians</div>
+              </div>
+              <div className="text-sm text-[var(--ink-soft)] mb-6 leading-[1.6] text-center">Multi-clinician scheduling, owner dashboard, separate billing per clinician, shared client base management.</div>
+              <hr className="border-t border-[var(--border)] mb-6"/>
+              <ul className="space-y-3 mb-8 list-none">
                 {['Everything in Solo', 'Multi-clinician calendar', 'Owner analytics dashboard', 'Role-based access control', 'Clinician payout reporting', 'Priority support'].map((f, i) => (
-                  <li key={i} className="text-sm text-[var(--ink-soft)] flex items-start gap-2.5">
+                  <li key={i} className="text-sm text-[var(--ink-soft)] flex items-start gap-3">
                     <svg viewBox="0 0 16 16" className="w-4 h-4 flex-shrink-0 mt-0.5">
                       <circle cx="8" cy="8" r="7.5" fill="var(--sage-pale)" stroke="var(--sage)" strokeWidth="1"/>
                       <path d="M5 8l2 2 4-4" fill="none" stroke="var(--sage)" strokeWidth="1.5" strokeLinecap="round"/>
@@ -391,7 +477,7 @@ export function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/dashboard" className="block w-full py-3 rounded-[9px] text-[15px] font-medium text-center bg-[var(--ink)] text-white no-underline hover:bg-[var(--sage-deep)] transition-colors">
+              <Link to="/dashboard" className="block w-full py-3.5 rounded-[10px] text-[15px] font-medium text-center bg-[var(--ink)] text-white no-underline hover:bg-[var(--sage-deep)] transition-colors">
                 Start free trial
               </Link>
             </div>
@@ -454,7 +540,7 @@ export function Landing() {
           Ready to focus on <em className="italic text-[var(--sage-light)]">therapy,</em><br/>not admin?
         </h2>
         <p className="text-base text-white/60 max-w-[520px] mx-auto mb-10 leading-[1.65]">
-          Start your free 14-day trial. No credit card required. Cancel anytime.
+          Start your free 7-day trial. No credit card required. Cancel anytime.
         </p>
         <div className="flex gap-2.5 max-w-[460px] mx-auto mb-4">
           <input 
@@ -466,7 +552,7 @@ export function Landing() {
             Start trial →
           </Link>
         </div>
-        <div className="text-xs text-white/40">14-day free trial · No credit card required · PHIPA compliant</div>
+        <div className="text-xs text-white/40">7-day free trial · No credit card required · PHIPA compliant</div>
       </section>
 
       {/* Footer */}

@@ -3,6 +3,13 @@ import { Landing } from "./components/pages/Landing";
 import { ClientPortal } from "./components/pages/ClientPortal";
 import { ClientPortalFull } from "./components/pages/ClientPortalFull";
 import { Onboarding } from "./components/pages/Onboarding";
+import { Checkout } from "./components/pages/Checkout";
+import { CheckoutSuccess } from "./components/pages/CheckoutSuccess";
+import { FAQ } from "./components/pages/FAQ";
+import { Contact } from "./components/pages/Contact";
+import { Support } from "./components/pages/Support";
+import { TrialAdmin } from "./components/pages/TrialAdmin";
+import { AITest } from "./components/pages/AITest";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { Overview } from "./components/pages/Overview";
 import { Clients } from "./components/pages/Clients";
@@ -18,80 +25,78 @@ import { SessionPrep } from "./components/pages/SessionPrep";
 import { OutcomeMeasures } from "./components/pages/OutcomeMeasures";
 import { Waitlist } from "./components/pages/Waitlist";
 import { TherapistWellbeing } from "./components/pages/TherapistWellbeing";
+import { Resources } from "./components/pages/Resources";
 
 // Simple error boundary fallback
 function ErrorBoundary() {
   return (
-    <div style={{ padding: '40px', textAlign: 'center' }}>
-      <h1>Oops! Something went wrong.</h1>
-      <p>Please try refreshing the page.</p>
-      <a href="/" style={{ color: '#4a7c6f', textDecoration: 'underline' }}>Go to Home</a>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <h1 className="text-2xl font-serif text-gray-900 mb-2">Something went wrong</h1>
+        <p className="text-gray-600 mb-4">Please try refreshing the page</p>
+        <a href="/" className="text-[#4a7c6f] hover:underline">Return to Home</a>
+      </div>
     </div>
   );
 }
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <Landing />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/portal",
+    path: "/client-portal",
     element: <ClientPortal />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/portal-full",
+    path: "/client-portal-full",
     element: <ClientPortalFull />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/wellbeing",
-    element: <TherapistWellbeing />,
-    errorElement: <ErrorBoundary />,
-  },
-  {
-    path: "/signup",
+    path: "/onboarding",
     element: <Onboarding />,
     errorElement: <ErrorBoundary />,
   },
-  // Redirects for old routes to new dashboard routes
   {
-    path: "/clients",
-    element: <Navigate to="/dashboard/clients" replace />,
+    path: "/checkout",
+    element: <Checkout />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/notes",
-    element: <Navigate to="/dashboard/notes" replace />,
+    path: "/checkout-success",
+    element: <CheckoutSuccess />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/billing",
-    element: <Navigate to="/dashboard/billing" replace />,
+    path: "/faq",
+    element: <FAQ />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/calendar",
-    element: <Navigate to="/dashboard/calendar" replace />,
+    path: "/contact",
+    element: <Contact />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/messages",
-    element: <Navigate to="/dashboard/messages" replace />,
+    path: "/support",
+    element: <Support />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/settings",
-    element: <Navigate to="/dashboard/settings" replace />,
+    path: "/trial-admin",
+    element: <TrialAdmin />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: "/compliance",
-    element: <Navigate to="/dashboard/compliance" replace />,
+    path: "/ai-test",
+    element: <AITest />,
     errorElement: <ErrorBoundary />,
   },
+  // Dashboard with all nested routes
   {
     path: "/dashboard",
     element: <DashboardLayout />,
@@ -110,6 +115,10 @@ export const router = createBrowserRouter([
       { path: "session-prep", element: <SessionPrep /> },
       { path: "outcome-measures", element: <OutcomeMeasures /> },
       { path: "waitlist", element: <Waitlist /> },
+      { path: "therapist-wellbeing", element: <TherapistWellbeing /> },
+      { path: "resources", element: <Resources /> },
+      { path: "faq", element: <FAQ /> },
+      { path: "support", element: <Support /> },
     ],
   },
   // Catch-all redirect to landing page
@@ -119,3 +128,5 @@ export const router = createBrowserRouter([
     errorElement: <ErrorBoundary />,
   },
 ]);
+
+export { router };

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Shield, FileText, Eye, Lock } from 'lucide-react';
 
 export function TherapistWellbeing() {
@@ -286,7 +286,7 @@ export function TherapistWellbeing() {
             MentalPath takes care<br />of you <em className="italic text-[#6B9E8F]">while you</em><br />take care of others.
           </h2>
           <p className="text-[16px] text-white/50 mb-9 leading-[1.6]">
-            30-day free trial. Canadian servers. PHIPA-compliant from minute one. All features included.
+            7-day free trial. Canadian servers. PHIPA-compliant from minute one. All features included.
           </p>
           <a
             href="/signup"

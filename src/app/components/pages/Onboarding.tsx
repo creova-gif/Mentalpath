@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Check, Eye, EyeOff, Shield, Plus } from 'lucide-react';
+import { startTrial } from '../../hooks/useTrialStatus';
 
 type OnboardingStep = 1 | 2 | 3 | 4;
 
@@ -76,8 +77,15 @@ export function Onboarding() {
   };
 
   const handleSubmit = () => {
+    // Save email for later use
+    localStorage.setItem('user_email', formData.email);
+    
+    // Start the 7-day free trial with user's email
+    startTrial(formData.email);
+    
     // In production, this would create the account and redirect to dashboard
     console.log('Onboarding completed:', formData);
+    console.log('7-day free trial started for:', formData.email);
     navigate('/dashboard');
   };
 
@@ -139,7 +147,7 @@ export function Onboarding() {
               <circle cx="8" cy="8" r="6"/>
               <path d="M8 5v3l2 2"/>
             </svg>
-            30-day free trial
+            7-day free trial
           </div>
         </div>
       </div>
@@ -170,7 +178,7 @@ export function Onboarding() {
                 Create your account
               </h2>
               <p className="text-sm text-[var(--ink-muted)] mb-7">
-                Free for 30 days. No credit card required.
+                Free for 7 days. No credit card required.
               </p>
 
               <div className="mb-4">
@@ -369,7 +377,7 @@ export function Onboarding() {
                 Choose your plan
               </h2>
               <p className="text-sm text-[var(--ink-muted)] mb-7">
-                Both plans include a 30-day free trial. Cancel anytime.
+                Both plans include a 7-day free trial. Cancel anytime.
               </p>
 
               <div className="grid grid-cols-2 gap-2.5 mb-4">
@@ -409,7 +417,7 @@ export function Onboarding() {
               </div>
 
               <div className="bg-[var(--sage-pale)] rounded-lg p-3 text-[13px] text-[var(--sage-deep)] leading-relaxed mb-4">
-                Your 30-day free trial starts today. You won't be charged until your trial ends. Cancel anytime from your settings.
+                Your 7-day free trial starts today. You will not be charged until your trial ends. Cancel anytime from your settings.
               </div>
 
               <button

@@ -1,0 +1,255 @@
+{
+  "nav": {
+    "features": "Fonctionnalités",
+    "compliance": "Conformité",
+    "pricing": "Tarification",
+    "clientPortal": "Portail client",
+    "dashboard": "Tableau de bord",
+    "signUpFree": "Inscription gratuite"
+  },
+  "hero": {
+    "badge": "Conçu pour les thérapeutes canadiens · Conforme LPRPS",
+    "title": {
+      "line1": "Moins d'administration.",
+      "line2": "Plus de",
+      "line2Italic": "présence",
+      "line3": "avec vos clients."
+    },
+    "subtitle": "Gestion de pratique conçue pour les thérapeutes, psychothérapeutes et travailleurs sociaux canadiens. Conforme LPRPS, culturellement informé et à prix abordable pour les praticiens solo.",
+    "cta": "Commencez votre essai gratuit →",
+    "seeHow": "Voir comment ça marche",
+    "footer": {
+      "noCreditCard": "Aucune carte de crédit requise",
+      "canadianServers": "Serveurs canadiens (LPRPS)",
+      "cancelAnytime": "Annulez à tout moment"
+    }
+  },
+  "dashboard": {
+    "greeting": "Bonjour, {{name}}",
+    "stats": {
+      "sessionsToday": "Séances aujourd'hui",
+      "billedThisWeek": "Facturé cette semaine",
+      "activeClients": "Clients actifs",
+      "todaysSessions": "Séances d'aujourd'hui",
+      "now": "Maintenant",
+      "noteDue": "Note due"
+    },
+    "compliance": "Données stockées au Canada · Conforme LPRPS · Chiffrement au repos"
+  },
+  "complianceStrip": {
+    "phipa": "Conforme LPRPS",
+    "pipeda": "Conforme LPRPDE",
+    "canadianServers": "Serveurs canadiens (ca-central-1)",
+    "collegeReady": "Dossiers conformes aux Ordres"
+  },
+  "problemSection": {
+    "tag": "Le vrai problème",
+    "title": {
+      "line1": "Votre logiciel de thérapie américain",
+      "line2": "vous",
+      "line2Italic": "met en danger"
+    },
+    "subtitle": "TherapyNotes, TheraNest, SimplePractice — conçus pour les praticiens américains, stockant les données les plus sensibles de vos clients sur des serveurs américains. Votre Ordre n'accepte pas cela.",
+    "problems": [
+      {
+        "tag": "Risque de violation de la vie privée",
+        "title": "Le stockage cloud américain viole la LPRPS",
+        "description": "La Loi sur la protection des renseignements personnels sur la santé de l'Ontario exige que les données de santé soient stockées au Canada ou chiffrées de manière à empêcher l'accès des forces de l'ordre américaines. La plupart des outils américains échouent à ce test."
+      },
+      {
+        "tag": "400-1 200$/an gaspillés",
+        "title": "Prix d'entreprise pour travail solo",
+        "description": "Jane App commence à 54$/mois et grimpe rapidement. Owl Practice à 89$/mois. Vous payez pour des fonctionnalités conçues pour des cabinets de 10 cliniciens. 70% des thérapeutes canadiens travaillent seuls ou en duo."
+      },
+      {
+        "tag": "Manquant : contexte culturel",
+        "title": "Les formulaires d'admission génériques ratent vos clients",
+        "description": "Le traumatisme des nouveaux arrivants, le stress racialisé, l'identité culturelle et les cadres de santé mentale spécifiques aux communautés ne figurent dans aucune bibliothèque d'admission standard. Vous les construisez à partir de zéro à chaque fois."
+      },
+      {
+        "tag": "2-3 h/semaine en admin",
+        "title": "Notes, facturation, planification — tout fragmenté",
+        "description": "La plupart des praticiens assemblent un outil de planification, une application de notes, un processeur de paiement et un portail client de différents fournisseurs. MentalPath remplace les quatre pour moins que ce que vous dépensez pour un seul."
+      }
+    ]
+  },
+  "featuresSection": {
+    "tag": "Ce que fait MentalPath",
+    "title": {
+      "line1": "Tout ce dont vous avez besoin.",
+      "line2": "Rien de superflu."
+    },
+    "subtitle": "Conçu pour le praticien canadien solo ou en petit groupe. Pas un portage d'un produit américain — conçu spécifiquement pour votre façon de travailler.",
+    "features": [
+      {
+        "title": "Gestion des clients + profils culturellement adaptés",
+        "description": "Dossiers clients complets avec formulaires d'admission, historique de séances, gestion du consentement et stockage de documents. Modèles d'admission pré-construits pour le traumatisme des nouveaux arrivants, la santé mentale des PANDC et les cadres de stress intersectionnel — prêts à personnaliser.",
+        "tags": ["Formulation culturelle", "Signature électronique", "Stockage documents", "Tarif modulé"]
+      },
+      {
+        "title": "Notes de séance + documentation assistée par IA",
+        "description": "Modèles de notes SOAP, DAP, BIRP et notes de progrès. Brouillon de résumé de séance IA optionnel (reste sur les serveurs canadiens, jamais envoyé aux É-U). Historique de notes, recherchable, lié à chaque client. Notes verrouillées après 24h pour éviter les modifications accidentelles.",
+        "tags": ["SOAP / DAP / BIRP", "Assistance IA", "Verrouillage 24h", "Recherchable"]
+      },
+      {
+        "title": "Facturation, factures + gestion tarif modulé",
+        "description": "Générez des reçus officiels pour les réclamations d'assurance clients, suivez les paiements, envoyez des rappels de factures impayées. Gestion du tarif modulé par client. Intégration Stripe pour les paiements par carte. Exportation T2200 / résumés de revenus de travail autonome au moment des impôts.",
+        "tags": ["Paiements Stripe", "Tarif modulé", "Reçus d'assurance", "Export fiscal"]
+      },
+      {
+        "title": "Portail client + messagerie sécurisée",
+        "description": "Les clients accèdent à leur propre portail pour prendre rendez-vous, remplir des formulaires d'admission, consulter les factures et vous envoyer des messages en toute sécurité — tout conforme LPRPS. Aucun téléchargement d'application requis. Fonctionne sur n'importe quel appareil.",
+        "tags": ["Auto-réservation", "Messagerie sécurisée", "Aucune app requise"]
+      },
+      {
+        "title": "Planification en ligne + rappels automatisés",
+        "description": "Partagez votre lien de réservation. Les clients choisissent parmi vos créneaux disponibles. Les rappels SMS + courriel automatisés réduisent les absences de 40%. Synchronisation Google Agenda. Types de séances : individuel, couple, famille, groupe.",
+        "tags": ["Lien de réservation", "Rappels SMS", "Google Agenda"]
+      }
+    ]
+  },
+  "complianceSection": {
+    "tag": "Conçu pour le Canada",
+    "title": {
+      "line1": "La conformité n'est pas une fonctionnalité.",
+      "line2": "C'est la fondation."
+    },
+    "subtitle": "Chaque décision architecturale a été prise en tenant compte des exigences de la LPRPS, de la LPRPDE et des Ordres. Pas rétroactivement — intégré dès le premier jour.",
+    "points": [
+      {
+        "title": "Toutes les données stockées au Canada (AWS ca-central-1)",
+        "description": "Dossiers clients, notes de séance, données de facturation — hébergés exclusivement dans les centres de données de Montréal et Toronto. Jamais acheminées ou accessibles en vertu du CLOUD Act américain."
+      },
+      {
+        "title": "Chiffrement de bout en bout au repos + en transit",
+        "description": "Chiffrement AES-256 pour les données stockées, TLS 1.3 pour toutes les connexions. Notes de séance chiffrées avec des clés spécifiques au thérapeute — même le personnel de MentalPath ne peut pas lire vos notes cliniques."
+      },
+      {
+        "title": "Dossiers et documentation conformes aux Ordres",
+        "description": "Formats de notes, formulaires de consentement et périodes de conservation alignés sur les exigences de l'OTSTCFQ, de l'OTSTCFQ, du CPO et du CPSBC. Journaux d'audit pour chaque accès aux dossiers."
+      },
+      {
+        "title": "Gestion du consentement client intégrée",
+        "description": "Formulaires de consentement numériques avec signatures électroniques horodatées. Versionnement du consentement — les clients re-consentent lorsque votre politique de confidentialité change. Retrait du consentement enregistré et respecté automatiquement."
+      }
+    ],
+    "badges": [
+      {
+        "icon": "🛡️",
+        "name": "LPRPS",
+        "description": "Loi sur la protection des renseignements personnels sur la santé de l'Ontario - entièrement conforme"
+      },
+      {
+        "icon": "🔒",
+        "name": "LPRPDE",
+        "description": "Loi fédérale sur la protection de la vie privée - toutes les données personnelles traitées selon les exigences de la LPRPDE"
+      },
+      {
+        "icon": "🍁",
+        "name": "Hébergement Canada uniquement",
+        "description": "AWS ca-central-1 - Montréal + Toronto - Aucun routage É-U"
+      },
+      {
+        "icon": "📋",
+        "name": "Normes des Ordres",
+        "description": "Exigences de dossiers OTSTCFQ, OTSTCFQ, CPO, CPSBC respectées"
+      }
+    ]
+  },
+  "pricingSection": {
+    "tag": "Tarification simple",
+    "title": {
+      "line1": "Payez moins que Jane App.",
+      "line2": "Obtenez plus pour le Canada."
+    },
+    "subtitle": "Pas de minimums d'unités. Pas de frais surprises. Annulez à tout moment. Conçu pour que les praticiens solo puissent réellement se permettre de gérer une pratique conforme.",
+    "plans": {
+      "starter": {
+        "name": "Débutant",
+        "price": "Gratuit",
+        "period": "pour toujours · 1 client actif",
+        "description": "Essayez MentalPath avec un vrai client avant de vous engager. Accès complet aux fonctionnalités, limite d'un seul client.",
+        "features": ["1 client actif", "Tous les modèles de notes", "Stockage serveur canadien", "Planification de base"],
+        "cta": "Commencer gratuitement"
+      },
+      "solo": {
+        "name": "Praticien solo",
+        "price": "49$",
+        "period": "/mois · clients illimités",
+        "description": "Tout ce dont un thérapeute solo, travailleur social ou psychothérapeute a besoin. Conforme LPRPS dès le premier jour.",
+        "badge": "Le plus populaire",
+        "features": [
+          "Clients illimités",
+          "Tous les formats de notes (SOAP, DAP, BIRP)",
+          "Assistance IA pour notes de séance",
+          "Réservation en ligne + rappels",
+          "Portail client + messagerie sécurisée",
+          "Facturation + factures + reçus",
+          "Formulaires d'admission culturellement adaptés",
+          "Export fiscal (préparation T2125)"
+        ],
+        "cta": "Commencer l'essai gratuit de 30 jours"
+      },
+      "group": {
+        "name": "Cabinet de groupe",
+        "price": "79$",
+        "period": "/mois par clinicien · 2+ cliniciens",
+        "description": "Planification multi-cliniciens, tableau de bord propriétaire, facturation séparée par clinicien, gestion partagée de la base de clients.",
+        "features": [
+          "Tout ce qui est dans Solo",
+          "Calendrier multi-cliniciens",
+          "Tableau de bord analytique propriétaire",
+          "Contrôle d'accès basé sur les rôles",
+          "Rapports de paiement des cliniciens",
+          "Support prioritaire"
+        ],
+        "cta": "Commencer l'essai gratuit"
+      }
+    }
+  },
+  "testimonialsSection": {
+    "tag": "De la part des praticiens",
+    "title": {
+      "line1": "Thérapeutes qui ont",
+      "line1Italic": "changé"
+    },
+    "testimonials": [
+      {
+        "quote": "J'étais sur TherapyNotes pendant 3 ans jusqu'à ce que mon superviseur de l'Ordre signale le problème de stockage aux É-U. J'ai basculé vers MentalPath en un après-midi. Les modèles d'admission culturellement adaptés à eux seuls m'ont fait gagner deux semaines de travail.",
+        "name": "Dre Abena Osei-Mensah",
+        "role": "Psychothérapeute autorisée · Toronto, ON"
+      },
+      {
+        "quote": "La fonctionnalité de facturation à tarif modulé est exactement ce dont j'avais besoin. La plupart de mes clients sont des nouveaux arrivants naviguant leur première année au Canada - pouvoir définir des tarifs par client sans solutions de contournement maladroites a changé ma façon de gérer ma pratique.",
+        "name": "Maya Rodriguez, MSW, TSI",
+        "role": "Travailleuse sociale · Vancouver, C-B"
+      },
+      {
+        "quote": "J'ai changé de Jane App. C'est 65$/mois moins cher et les modèles de notes DAP sont en fait meilleurs. Mes notes sont conformes aux exigences de mon Ordre dès le départ - je n'ai rien eu à configurer.",
+        "name": "Dr Kenji Nakamura",
+        "role": "Psychologue clinicien · Calgary, AB"
+      }
+    ]
+  },
+  "ctaSection": {
+    "title": {
+      "line1": "Prêt à vous concentrer sur la",
+      "line1Italic": "thérapie,",
+      "line2": "pas l'administration?"
+    },
+    "subtitle": "Commencez votre essai gratuit de 14 jours. Aucune carte de crédit requise. Annulez à tout moment.",
+    "placeholder": "votre.courriel@exemple.com",
+    "cta": "Commencer l'essai →",
+    "footer": "Essai gratuit de 14 jours · Aucune carte de crédit requise · Conforme LPRPS"
+  },
+  "footer": {
+    "links": {
+      "features": "Fonctionnalités",
+      "compliance": "Conformité",
+      "pricing": "Tarification",
+      "privacy": "Confidentialité",
+      "terms": "Conditions"
+    },
+    "copyright": "© 2026 MentalPath. Fabriqué au Canada. Conforme LPRPS et LPRPDE. Pour les professionnels canadiens de la santé mentale."
+  }
+}
